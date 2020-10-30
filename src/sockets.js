@@ -1,6 +1,9 @@
 //Servicor - consola
 const fs = require('fs');
 const { request } = require('http');
+const { connect } = require('http2');
+const Chat = require('./public/models/chat')
+
 
 module.exports = function( io ){
     
@@ -9,7 +12,13 @@ module.exports = function( io ){
     let enVivo = [0];
     let totalLikes = [0];
     let totalDislikes = [0];
-    io.on( 'connection' , socket => {
+
+    io.on( 'connection' , async socket => {
+
+         let mensajes =  await Chat.find({}).limit(5)
+        //  console.log(mensajes);
+         socket.emit('cargar' , mensajes)
+        
         console.log('Un nuevo usuario conectado');
         let lifeResta = enVivo[0] + 1;
         let totalGuardar = totalConectados[0] + 1;
@@ -24,7 +33,6 @@ module.exports = function( io ){
         })
         
 
-        
 
         socket.on('new user' , (data , cb) => {
             console.log(data); // imprimir el nickname del usuario en console
@@ -54,7 +62,13 @@ module.exports = function( io ){
         })
 
 
-        socket.on('send message' , function( data ){  // Resive el mensaje
+        socket.on('send message' , async function( data ){  // Resive el mensaje
+            var newMsg =  new Chat({
+                mensaje : data
+            })
+
+            await newMsg.save(); //Guardar los mensajes en la base de datos
+            
             io.sockets.emit('new message' , {    //De aqui envio informacion
                  msg : data,
                  nick : "User"
@@ -62,9 +76,6 @@ module.exports = function( io ){
         })
         
         socket.on('disconnect' , data => {
-              /*   if(!socket.nickName ) return;
-                nickNames.splice(nickNames.indexOf(socket.nickName) , 1);
-                updateNickName(); */
                 console.log('Usuario desconectado');
                 let resta = enVivo[0] - 1;
                 enVivo.splice( 0 , 1 , resta )

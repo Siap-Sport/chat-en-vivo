@@ -1,0 +1,2 @@
+1.- npm install moongose
+*Models se va a encargar de almacenar como van a lucir todos nuestros datos antes de almacenarlos

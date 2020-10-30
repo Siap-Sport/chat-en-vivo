@@ -93,11 +93,6 @@ $( function() {
         $enLinea.html(`En linea : ${data}`)
     })
     
-
-    
-    
-    
-
   
     $nickForm.submit( e => {
         e.preventDefault()
@@ -132,9 +127,6 @@ $( function() {
 
      socket.on('new message' , function( data ){  //Este es el evento que se encarga de escuchar este mensaje , el que proviende de sockets
         $chat.append( '<b>' + data.nick + '</b>' + ': ' + data.msg  + '<br/>')
-
-
-        //  localStorage.setItem( 'num' , num );
      })
 
      socket.on('imprimirLikes' , data => {
@@ -162,6 +154,16 @@ $( function() {
          $users.html(html)
      }  )
      
+     socket.on('cargar' , (data) => {
+         console.log('whaaaaaaaat');
+         console.log(data);
+         for ( let i = 0 ; i < data.length; i++){
+             displayMsg(data[i])
+         }
+     })
 
+     let displayMsg = (data) => {
+        $chat.append( '<b>' + 'Admin' + '</b>' + ': ' + data.mensaje  + '<br/>')
+     }
 
 } )
