@@ -17,7 +17,11 @@ mongoose.connect('mongodb://localhost/chat-database')  //El nombre chat-databse 
 //Settings
 app.set( 'port' , process.env.PORT || 3000 )
 
-require( './sockets' )( io )
+const servidor = require('./sockets') //Esto viene de /.scokets
+const servidorDos = require('./socketsDos')
+servidor.ioFnc(io);  //LE envio como parametro 'io' a el archivo sockets
+servidorDos.ioFnc(io);//Le envio como paramtero 'io' a el archivo socketsDos 
+// require( './sockets' )( io )
 
 // Enviando archivos estaticos
 

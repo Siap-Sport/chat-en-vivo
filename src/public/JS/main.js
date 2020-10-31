@@ -155,8 +155,7 @@ $( function() {
      }  )
      
      socket.on('cargar' , (data) => {
-         console.log('whaaaaaaaat');
-         console.log(data);
+        //  console.log(data);
          for ( let i = 0 ; i < data.length; i++){
              displayMsg(data[i])
          }

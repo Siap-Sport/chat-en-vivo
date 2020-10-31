@@ -1,11 +1,8 @@
 //Servicor - consola
 const fs = require('fs');
-const { request } = require('http');
-const { connect } = require('http2');
 const Chat = require('./public/models/chat')
 
-
-module.exports = function( io ){
+ function ioFnc( io ){
     
     let nickNames = [];
     let totalConectados = [0]
@@ -16,7 +13,6 @@ module.exports = function( io ){
     io.on( 'connection' , async socket => {
 
          let mensajes =  await Chat.find({}).limit(5)
-        //  console.log(mensajes);
          socket.emit('cargar' , mensajes)
         
         console.log('Un nuevo usuario conectado');
@@ -115,4 +111,9 @@ module.exports = function( io ){
         
     })
     
+}
+
+
+module.exports = {
+    ioFnc
 }
